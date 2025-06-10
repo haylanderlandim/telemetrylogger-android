@@ -1,44 +1,44 @@
-# Android Telemetry Logger
+# Telemetry Logger - Android
 
-Biblioteca Android para envio de logs estruturados em JSON usando OpenTelemetry e Elastic APM.
+Android library for sending structured JSON logs using OpenTelemetry and Elastic APM.
 
-## Visão Geral
+## Overview
 
-Esta biblioteca permite que aplicativos Android enviem logs estruturados para sistemas de observabilidade compatíveis com OpenTelemetry, incluindo Elastic APM. Os logs são enviados em formato JSON com atributos customizados, facilitando análise e monitoramento.
+This library allows Android applications to send structured logs to observability systems compatible with OpenTelemetry, including Elastic APM. Logs are sent in JSON format with custom attributes, enabling easier analysis and monitoring.
 
-Suporta:
+Supports:
 
-* Inicialização simples com parâmetros do serviço e endpoint
-* Envio de eventos JSON estruturados como logs
-* Abstração para múltiplas implementações (OpenTelemetry, Elastic APM)
-* Configuração de contexto (nome do serviço, versão, ambiente)
-* Uso de singleton para garantir instância única da lib no app
-
----
-
-## Funcionalidades
-
-* Inicializa clientes OpenTelemetry ou Elastic APM para enviar logs via OTLP/gRPC
-* Transforma JSON arbitrário em atributos e corpo de logs OpenTelemetry
-* Suporte a atributos aninhados no JSON, convertidos em chaves pontuadas
-* Fácil integração em apps Android com métodos simples `initialize` e `logEvent`
-* Compatível com Android API nível 21+
+* Simple initialization with service parameters and endpoint
+* Sending structured JSON events as logs
+* Abstraction for multiple implementations (OpenTelemetry, Elastic APM)
+* Context configuration (service name, version, environment)
+* Singleton usage to ensure a single instance of the logger within the app
 
 ---
 
-## Instalação
+## Features
 
-### Como usar localmente (exemplo)
+* Initializes OpenTelemetry or Elastic APM clients to send logs via OTLP/gRPC
+* Transforms arbitrary JSON into OpenTelemetry log attributes and body
+* Supports nested JSON attributes, converted into dotted keys
+* Easy integration into Android apps using simple `initialize` and `logEvent` methods
+* Compatible with Android API level 21+
 
-1. Adicione a biblioteca `.aar` no seu projeto Android (gerar usando Gradle, ver seção Build).
+---
 
-2. Importe no seu módulo:
+## Installation
+
+### Local Usage Example
+
+1. Add the `.aar` library to your Android project (generated via Gradle, see Build section).
+
+2. Import it in your module:
 
 ```kotlin
 implementation project(":telemetrylogger")
 ```
 
-Ou, caso publique em Maven local, adicione:
+Or, if published to the local Maven repository, add:
 
 ```gradle
 repositories {
@@ -51,34 +51,34 @@ dependencies {
 
 ---
 
-## Uso
+## Usage
 
-### Permissões Necessárias
+### Required Permissions
 
-Certifique-se de declarar a seguinte permissão no `AndroidManifest.xml` do **aplicativo (app)** que consome esta biblioteca:
+Make sure to declare the following permission in the `AndroidManifest.xml` of the **application (app)** using this library:
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
-> ⚠️ Esta permissão **não é adicionada automaticamente pela biblioteca**. O app precisa declará-la para que a comunicação com o APM (via rede) funcione corretamente.
+> ⚠️ This permission is **not automatically added by the library**. The app must declare it for proper network communication with the APM server.
 
 ---
 
-### Inicialização
+### Initialization
 
-Chame o método `initialize` da implementação desejada (OpenTelemetry ou Elastic APM) **e depois** passe a instância resultante para o `TelemetryLogger.init(...)`.
+Call the `initialize` method from the desired implementation (OpenTelemetry or Elastic APM) **and then** pass the resulting instance to `TelemetryLogger.init(...)`.
 
-Recomenda-se fazer isso no `Application` da sua app, ou em algum ponto de entrada central:
+It is recommended to do this in your app's `Application` class or in a central entry point:
 
 ```kotlin
-val logger = OpenTelemetryLogger.initialize( // ou ElasticApmLogger.initialize
+val logger = OpenTelemetryLogger.initialize( // or ElasticApmLogger.initialize
     application = this,
-    serviceName = "meu-app",
+    serviceName = "my-app",
     serviceVersion = "1.0.0",
     environment = "production",
-    apmEndpoint = "https://meu-apm-endpoint:4317",
-    apiKey = "seu-api-key"
+    apmEndpoint = "https://my-apm-endpoint:4317",
+    apiKey = "your-api-key"
 )
 
 TelemetryLogger.init(logger)
@@ -86,14 +86,14 @@ TelemetryLogger.init(logger)
 
 ---
 
-### Enviando logs estruturados em JSON
+### Sending Structured JSON Logs
 
-Para enviar um evento de log com dados JSON:
+To send a log event with JSON data:
 
 ```kotlin
 val json = """
 {
-  "message": "Usuário autenticado com sucesso",
+  "message": "User successfully authenticated",
   "userId": "1234",
   "success": true,
   "latencyMs": 145.7
@@ -105,10 +105,10 @@ TelemetryLogger.logEvent(json)
 
 ---
 
-## Design e Arquitetura
+## Design & Architecture
 
-* Usa singleton para manter instância única e evitar múltiplas conexões
-* Separação clara entre interface (`TelemetryLogger`) e implementações (`OpenTelemetryLogger`, `ElasticApmLogger`)
-* JSON é transformado em atributos do log usando `JsonAttributeParser`
-* Suporte para múltiplos backends via polimorfismo e interface comum
-* Configura recursos do serviço com atributos padrão de ambiente e dispositivo (Android)
+* Uses a singleton to maintain a single instance and avoid multiple connections
+* Clear separation between the interface (`TelemetryLogger`) and implementations (`OpenTelemetryLogger`, `ElasticApmLogger`)
+* JSON is transformed into log attributes using `JsonAttributeParser`
+* Supports multiple backends through polymorphism and a common interface
+* Configures service resources with default environment and Android device attributes
