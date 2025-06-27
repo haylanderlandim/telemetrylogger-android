@@ -161,3 +161,59 @@ const timestampNano = Date.now() * 1e6;
 
 // Salva em variável de ambiente ou collection (aqui uso variável de ambiente)
 pm.environment.set("timestampNano", timestampNano);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { logs, SeverityNumber } from '@opentelemetry/api-logs';
+import { LoggerProvider, SimpleLogRecordProcessor } from '@opentelemetry/sdk-logs';
+import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-proto';
+
+const exporter = new OTLPLogExporter({
+  url: 'https://my-observability-project-a079ec.apm.us-east-1.aws.elastic.cloud:443/v1/logs',
+  headers: {
+    Authorization: 'ApiKey ZHhjTHJwY0JTNVk1NGZCY1RIelE6TUhJUXY2X1pJT2I3RENacENCbVg1UQ==',   // id:api_key em Base64
+  },
+});
+
+const provider = new LoggerProvider();
+provider.addLogRecordProcessor(new SimpleLogRecordProcessor(exporter));
+logs.setGlobalLoggerProvider(provider);
+
+const logger = logs.getLogger('node-demo');
+logger.emit({
+  severityNumber: SeverityNumber.INFO,
+  body: 'Log teste enviado com debug!',
+  attributes: { event: 'purchase', success: true },
+});
+
+await provider.forceFlush().then(() => {
+  console.log('✅ Log enviado!');
+}).catch(err => {
+  console.error('❌ Erro ao enviar log:', err);
+});
+
+
+
+
+
+
+
+"@opentelemetry/api": "^1.9.0",
+"@opentelemetry/exporter-logs-otlp-proto": "^0.202.0",
+"@opentelemetry/sdk-logs": "^0.202.0"
