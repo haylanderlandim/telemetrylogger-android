@@ -149,9 +149,12 @@ curl --location 'https:///v1/logs' \
 
 
 
+{"metadata":{"service":{"name":"my-simple-app","agent":{"name":"custom-agent","version":"1.0.0"}}}}
+{"log":{"level":"INFO","message":"Hello from NDJSON","timestamp":1719441700000000}}
 
+1750984081366000000
 
-
+Date.now() * 1_000_000;
 
 // Gera o timestamp atual em nanossegundos
 const timestampNano = Date.now() * 1e6;
