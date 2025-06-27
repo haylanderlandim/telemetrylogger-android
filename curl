@@ -1,0 +1,160 @@
+curl --location 'https:///v1/logs' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: ApiKey ' \
+--data '{
+    "resourceLogs": [
+        {
+            "resource": {
+                "attributes": [
+                    {
+                        "key": "service.name",
+                        "value": {
+                            "stringValue": "br.com.landim.log"
+                        }
+                    },
+                    {
+                        "key": "service.version",
+                        "value": {
+                            "stringValue": "1.0"
+                        }
+                    },
+                    {
+                        "key": "deployment.environment",
+                        "value": {
+                            "stringValue": "dev"
+                        }
+                    },
+                    {
+                        "key": "telemetry.sdk.name",
+                        "value": {
+                            "stringValue": "android"
+                        }
+                    },
+                    {
+                        "key": "telemetry.sdk.language",
+                        "value": {
+                            "stringValue": "java"
+                        }
+                    },
+                    {
+                        "key": "telemetry.sdk.version",
+                        "value": {
+                            "stringValue": "1.0.0"
+                        }
+                    },
+                    {
+                        "key": "os.description",
+                        "value": {
+                            "stringValue": "Android 15, API level 35, BUILD 12592187"
+                        }
+                    },
+                    {
+                        "key": "os.name",
+                        "value": {
+                            "stringValue": "Android"
+                        }
+                    },
+                    {
+                        "key": "os.version",
+                        "value": {
+                            "stringValue": "15"
+                        }
+                    },
+                    {
+                        "key": "process.runtime.name",
+                        "value": {
+                            "stringValue": "Android Runtime"
+                        }
+                    },
+                    {
+                        "key": "process.runtime.version",
+                        "value": {
+                            "stringValue": "2.1.0"
+                        }
+                    },
+                    {
+                        "key": "device.manufacturer",
+                        "value": {
+                            "stringValue": "Google"
+                        }
+                    },
+                    {
+                        "key": "device.model.identifier",
+                        "value": {
+                            "stringValue": "sdk_gphone64_x86_64"
+                        }
+                    },
+                    {
+                        "key": "app.installation.id",
+                        "value": {
+                            "stringValue": "4b7573e6-f81a-42b1-9059-2bb0d9c5f287"
+                        }
+                    }
+                ]
+            },
+            "scopeLogs": [
+                {
+                    "scope": {
+                        "name": "br.com.landim.log"
+                    },
+                    "logRecords": [
+                        {
+                            "timeUnixNano": "{{timestampNano}}",
+                            "severityNumber": 9,
+                            "severityText": "INFO",
+                            "body": {
+                                "stringValue": "Log simulado via Postman com estrutura real do app"
+                            },
+                            "attributes": [
+                                {
+                                    "key": "event",
+                                    "value": {
+                                        "stringValue": "purchase"
+                                    }
+                                },
+                                {
+                                    "key": "success",
+                                    "value": {
+                                        "boolValue": true
+                                    }
+                                },
+                                {
+                                    "key": "session.id",
+                                    "value": {
+                                        "stringValue": "e8eb3528-7102-4973-8e1f-f295c98198c8"
+                                    }
+                                },
+                                {
+                                    "key": "user",
+                                    "value": {
+                                        "stringValue": "{\"id\":1,\"name\":\"Landim\"}"
+                                    }
+                                },
+                                {
+                                    "key": "network.connection.type",
+                                    "value": {
+                                        "stringValue": "wifi"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'
+
+
+
+
+
+
+
+
+
+// Gera o timestamp atual em nanossegundos
+const timestampNano = Date.now() * 1e6;
+
+// Salva em variável de ambiente ou collection (aqui uso variável de ambiente)
+pm.environment.set("timestampNano", timestampNano);
